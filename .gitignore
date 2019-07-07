@@ -1,3 +1,9 @@
+# added by roy
+client.js
+
+pnpm-lock.yaml
+/.gitignore
+
 # Logs
 logs
 *.log
