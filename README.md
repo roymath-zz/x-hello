@@ -1,3 +1,3 @@
 # x-hello
-Simple test npm project.
+Simple test npm project..
 
