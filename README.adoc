@@ -1,78 +1,107 @@
-=== Driver/Trips Coding Assignment
+= An illustrated blog
+(from the creative team at Anoobe)
 
-==== Initial Thoughts and assessment
+// TODO: these don't work!
+// :linkcss:
+// link:adoc-link.adoc[]
 
-* Problem is reasonably simple, but well designed
-* Intent is to capture skill level and programmer maturity
-* Use a TDD approach after first getting a skeletal version up.
+:stylesdir: css/
+:stylesheet: custom.css
 
-==== Requirements
-Here is a condensation of the requirements
+:icons: font
 
- * Accept input via stdin, OR
- * Accept input via a named file
- * Verify that each line in the input file contains a valid command (Driver/Trip)
- * Commands contain space-delimited fields
- * Drivers never drive past midnight (start time<end time)
- * Discard any trips that average a speed of less than 5 mph or greater than 100 mph.
- * Generate a report containing
-   ** driver
-   ** total miles driven
-   ** average speed
 
-==== Design
+:mylink: http://www.apache.org/licenses/LICENSE-2.0
+:imagesdir: images
+
+:heading-title: long heading \
+that I would like to \
+span over multiple lines \
+in the .adoc file
 
 [frame=none, cols="2"]
 |===
-a|image:design/design.png[title="class diagram"]
-a|Model Driver and Trip objects; Driver aggregates Trip objects.
+
+a|included image: image:roy-lata.png[link="{mylink}", width="140", title="roy say's click here"]
+a|include::snippets.adoc[tag=joe]
+
+a|include::snippets.adoc[tag=jane]
+a|
+included graphviz diagram (svg; transparent)
+[graphviz, graphviz_test_1, svg]
+[link="{mylink}", width="240"]
+....
+digraph test {
+  rankdir="LR"
+  bgcolor="transparent"
+  size="1.5"
+  A -> e
+  B -> C
+  C -> D
+}
+....
+
+
+|link to gsap animation
+|xyz image:astronaut-icon.svg[link="animation/index.html", text="astronaut"] abc def
+// |+++<img class="boxed" src="images/astronaut.svg"/>+++
+
+|link to michelle article
+|icon:book[link="articles/michelle.html"]
+
+2+a|
+span 2-cols
+[mermaid,gantt,svg]
+----
+gantt
+dateFormat  YYYY-MM-DD
+title Adding GANTT diagram to mermaid
+# excludes weekdays 2014-01-10
+
+section A section
+Completed task            :done,    des1, 2014-01-06,2014-01-08
+Active task               :active,  des2, 2014-01-09, 3d
+Future task               :         des3, after des2, 5d
+Future task2              :         des4, after des3, 5d
+----
+
+
+|ruby code
+|
+[source, ruby]
+----
+include::core.rb[tag=parse]
+----
+
+
+|link to sara article
+|icon:book[link="articles/sara.html"]
+
 |===
 
- * Use a compiled regexp parser (for efficiency).
- * Handle Exception cases
- * Processing should succeed even if some Driver lines are listed out of order (i.e after Trips)
- * Follow rounding rules as indicated. Do not round per trip, but only in the final total.
-
-==== Implementation
- * Use python `dateutil` for flexible date/time parsing
- * Create `__str__` method for Trip for easier debugging/diagnostics
- * use python `argparse` library for flexible command line processing and _Usage help_
-
-==== Testing and TDD
- * Use pytest for robust testing setup.
- * Wrote tests for both positive and negative cases in BDD style
- ** test trip constructor
- ** test invalid trip by speed
- ** test driver constructor
- ** test driver with trips
- ** test all trips
- ** test all trips missing driver name
- ** test invalid trips by speed
- ** test all trips invalid trip data
-
-==== Running the program
-
-[source,shell]
+[source, ruby]
 ----
-tar zcvf ./rootco-coding-exercise.tgz
-cd rootco-coding-exercise/
-
-# may need to do: `pip install pytest'
-python -m pytest test_driver.py
-
-# run program (with filename)
-python main.py sampledata.txt
-
-# run program (from stdin)
-cat sampledata.txt | python main.py
+include::core.rb[tag=parse]
 ----
 
-==== Notes
-* I had the wrong calculation around the avg speed at first, so the expected values were helpful and I caught errors when tests broke.
 
-==== Future Considerations
-* Generate code coverage report
-* Could handle the case if the driver names needed to be case insensitive.
-* Didn't want to be too pedantic about documenting functions; would follow PEP257 and use `pydoc` in practice.
-* If a driver row happens twice, issue a warning
+++++
+<div id="disqus_thread"></div>
 
+<script>
+var disqus_config = function () {
+
+this.page.url = 'https://blog.anoobe.com/index.html';
+this.page.identifier = 'index.html';
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://anoobe.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+++++
