@@ -1,12 +1,78 @@
-= Introduction to AsciiDoc
-Doc Writer <doc@example.com>
+=== Driver/Trips Coding Assignment
 
-A preface about https://asciidoc.org[AsciiDoc].
+==== Initial Thoughts and assessment
 
-== First Section
+* Problem is reasonably simple, but well designed
+* Intent is to capture skill level and programmer maturity
+* Use a TDD approach after first getting a skeletal version up.
 
-* item 1
-* item 2
+==== Requirements
+Here is a condensation of the requirements
 
-[source,ruby]
-puts "Hello, World!"
+ * Accept input via stdin, OR
+ * Accept input via a named file
+ * Verify that each line in the input file contains a valid command (Driver/Trip)
+ * Commands contain space-delimited fields
+ * Drivers never drive past midnight (start time<end time)
+ * Discard any trips that average a speed of less than 5 mph or greater than 100 mph.
+ * Generate a report containing
+   ** driver
+   ** total miles driven
+   ** average speed
+
+==== Design
+
+[frame=none, cols="2"]
+|===
+a|image:design/design.png[title="class diagram"]
+a|Model Driver and Trip objects; Driver aggregates Trip objects.
+|===
+
+ * Use a compiled regexp parser (for efficiency).
+ * Handle Exception cases
+ * Processing should succeed even if some Driver lines are listed out of order (i.e after Trips)
+ * Follow rounding rules as indicated. Do not round per trip, but only in the final total.
+
+==== Implementation
+ * Use python `dateutil` for flexible date/time parsing
+ * Create `__str__` method for Trip for easier debugging/diagnostics
+ * use python `argparse` library for flexible command line processing and _Usage help_
+
+==== Testing and TDD
+ * Use pytest for robust testing setup.
+ * Wrote tests for both positive and negative cases in BDD style
+ ** test trip constructor
+ ** test invalid trip by speed
+ ** test driver constructor
+ ** test driver with trips
+ ** test all trips
+ ** test all trips missing driver name
+ ** test invalid trips by speed
+ ** test all trips invalid trip data
+
+==== Running the program
+
+[source,shell]
+----
+tar zcvf ./rootco-coding-exercise.tgz
+cd rootco-coding-exercise/
+
+# may need to do: `pip install pytest'
+python -m pytest test_driver.py
+
+# run program (with filename)
+python main.py sampledata.txt
+
+# run program (from stdin)
+cat sampledata.txt | python main.py
+----
+
+==== Notes
+* I had the wrong calculation around the avg speed at first, so the expected values were helpful and I caught errors when tests broke.
+
+==== Future Considerations
+* Generate code coverage report
+* Could handle the case if the driver names needed to be case insensitive.
+* Didn't want to be too pedantic about documenting functions; would follow PEP257 and use `pydoc` in practice.
+* If a driver row happens twice, issue a warning
+
